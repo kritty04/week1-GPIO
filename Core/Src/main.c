@@ -89,13 +89,48 @@ int main(void)
   MX_GPIO_Init();
   MX_USART2_UART_Init();
   /* USER CODE BEGIN 2 */
-
+  GPIO_PinState SwitchState[2] ; //NOW,last
+  uint16_t LED1_haftT= 500;//1hz
+  uint32_t runtime=0;
+  uint32_t timestamp=0;
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
+	  if (HAL_GetTick()- timestamp>=100)
+	  { timestamp=HAL_GetTick();
+	 SwitchState[0]= HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_10); //press == LOW
+	 if (SwitchState[1]== GPIO_PIN_SET && SwitchState[0]== GPIO_PIN_RESET )
+	 {
+		 if(LED1_haftT==500)
+		 {
+			 LED1_haftT=250;
+		 }
+		 else
+		{
+			 LED1_haftT = 500 ;
+		}
+	 }
+	 SwitchState[1]=SwitchState[0];
+	  }
+	 if (HAL_GetTick()-runtime>= LED1_haftT)
+	 {
+		 runtime= HAL_GetTick();//ms
+		 if (HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_9)==0)
+		 {
+			 HAL_GPIO_WritePin(GPIOA, GPIO_PIN_9, 1);
+		 }
+		 else
+		 {
+			 HAL_GPIO_WritePin(GPIOA, GPIO_PIN_9, 0);
+		 }
+	 }
+
+
+
+
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
