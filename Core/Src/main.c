@@ -94,7 +94,7 @@ int main(void)
   GPIO_PinState SwitchState2[2] ;
   GPIO_PinState SwitchState3[2] ;
   uint16_t LED3_state= 0;
-  uint16_t LED1_haftT= 250;//0.5hz
+  uint16_t LED1_haftT= 1000;//0.5hz
   uint16_t LED5_onT=500 ;
   uint16_t LED5_offT=1500 ;
   uint32_t runtime=0;
@@ -114,19 +114,19 @@ int main(void)
 	 SwitchState3[0]= HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_5);
 	 if (SwitchState1[1]== GPIO_PIN_SET && SwitchState1[0]== GPIO_PIN_RESET )
 	 {
-		 if(LED1_haftT==250)
+		 if(LED1_haftT==1000)
 		 {
 			 LED1_haftT=500;
 		 }
 		 else if (LED1_haftT==500)
-		 { LED1_haftT=1000;
+		 { LED1_haftT=250;
 		 }
-		 else if (LED1_haftT==1000)
-		 { LED1_haftT=1500;
+		 else if (LED1_haftT==250)
+		 { LED1_haftT=166;
 		 }
 		 else
 		{
-			 LED1_haftT = 250 ;
+			 LED1_haftT = 1000 ;
 		}
 	 }
 	 SwitchState1[1]=SwitchState1[0];
