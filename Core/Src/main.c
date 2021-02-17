@@ -91,7 +91,7 @@ int main(void)
   MX_USART2_UART_Init();
   /* USER CODE BEGIN 2 */
   GPIO_PinState SwitchState[2] ; //NOW,last
-  uint16_t LED1_haftT= 500;//1hz
+  uint16_t LED1_haftT= 250;//1hz
   uint32_t runtime=0;
   uint32_t timestamp=0;
   /* USER CODE END 2 */
@@ -105,13 +105,19 @@ int main(void)
 	 SwitchState[0]= HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_10); //press == LOW
 	 if (SwitchState[1]== GPIO_PIN_SET && SwitchState[0]== GPIO_PIN_RESET )
 	 {
-		 if(LED1_haftT==500)
+		 if(LED1_haftT==250)
 		 {
-			 LED1_haftT=250;
+			 LED1_haftT=500;
+		 }
+		 else if (LED1_haftT==500)
+		 { LED1_haftT=1000;
+		 }
+		 else if (LED1_haftT==1000)
+		 { LED1_haftT=1500;
 		 }
 		 else
 		{
-			 LED1_haftT = 500 ;
+			 LED1_haftT = 250 ;
 		}
 	 }
 	 SwitchState[1]=SwitchState[0];
