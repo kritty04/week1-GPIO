@@ -54,8 +54,8 @@ all: main-build
 main-build: week1GPIO.elf secondary-outputs
 
 # Tool invocations
-week1GPIO.elf: $(OBJS) $(USER_OBJS) C:\git\week1\ GPIO\STM32F411RETX_FLASH.ld
-	arm-none-eabi-gcc -o "week1GPIO.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"C:\git\week1 GPIO\STM32F411RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="week1GPIO.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+week1GPIO.elf: $(OBJS) $(USER_OBJS) D:\Git\week1-GPIO\STM32F411RETX_FLASH.ld
+	arm-none-eabi-gcc -o "week1GPIO.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"D:\Git\week1-GPIO\STM32F411RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="week1GPIO.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
 	@echo 'Finished building target: $@'
 	@echo ' '
 

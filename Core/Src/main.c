@@ -66,6 +66,7 @@ static void MX_USART2_UART_Init(void);
 int main(void)
 {
   /* USER CODE BEGIN 1 */
+	// kuy
 
   /* USER CODE END 1 */
 
@@ -89,10 +90,17 @@ int main(void)
   MX_GPIO_Init();
   MX_USART2_UART_Init();
   /* USER CODE BEGIN 2 */
-  GPIO_PinState SwitchState[2] ; //NOW,last
-  uint16_t LED1_haftT= 500;//1hz
+  GPIO_PinState SwitchState1[2] ; //NOW,last
+  GPIO_PinState SwitchState2[2] ;
+  GPIO_PinState SwitchState3[2] ;
+  uint16_t LED3_state= 0;
+  uint16_t LED1_haftT= 1000;//0.5hz
+  uint16_t LED5_onT=500 ;
+  uint16_t LED5_offT=1500 ;
   uint32_t runtime=0;
+  uint32_t runtime2=0;
   uint32_t timestamp=0;
+  uint32_t x=0;
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -101,19 +109,42 @@ int main(void)
   {
 	  if (HAL_GetTick()- timestamp>=100)
 	  { timestamp=HAL_GetTick();
-	 SwitchState[0]= HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_10); //press == LOW
-	 if (SwitchState[1]== GPIO_PIN_SET && SwitchState[0]== GPIO_PIN_RESET )
+	 SwitchState1[0]= HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_10); //press == LOW
+	 SwitchState2[0]= HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_3);
+	 SwitchState3[0]= HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_5);
+	 if (SwitchState1[1]== GPIO_PIN_SET && SwitchState1[0]== GPIO_PIN_RESET )
 	 {
-		 if(LED1_haftT==500)
+		 if(LED1_haftT==1000)
 		 {
-			 LED1_haftT=250;
+			 LED1_haftT=500;
+		 }
+		 else if (LED1_haftT==500)
+		 { LED1_haftT=250;
+		 }
+		 else if (LED1_haftT==250)
+		 { LED1_haftT=166;
 		 }
 		 else
 		{
-			 LED1_haftT = 500 ;
+			 LED1_haftT = 1000 ;
 		}
 	 }
-	 SwitchState[1]=SwitchState[0];
+	 SwitchState1[1]=SwitchState1[0];
+	 if (SwitchState2[1]== GPIO_PIN_SET && SwitchState2[0]== GPIO_PIN_RESET )
+	 	 {
+	 		LED3_state =(LED3_state^=1); //XOR
+	 		HAL_GPIO_WritePin(GPIOC, GPIO_PIN_7, LED3_state);
+	 	 }
+	 	 SwitchState2[1]=SwitchState2[0];
+	 	if (SwitchState3[1]== GPIO_PIN_SET && SwitchState3[0]== GPIO_PIN_RESET )
+	 		 	 {
+	 		 		uint16_t save_state= LED5_onT;
+	 		 		LED5_onT=LED5_offT;
+	 		 		LED5_offT=save_state;
+
+	 		 	 }
+	 		 	 SwitchState3[1]=SwitchState3[0];
+
 	  }
 	 if (HAL_GetTick()-runtime>= LED1_haftT)
 	 {
@@ -127,6 +158,22 @@ int main(void)
 			 HAL_GPIO_WritePin(GPIOA, GPIO_PIN_9, 0);
 		 }
 	 }
+	 if (runtime2<=LED5_onT)
+	 {
+	 HAL_GPIO_WritePin(GPIOB, GPIO_PIN_6, 1);
+	 }
+	 else if (runtime2>=2000)
+	 	 {
+	 	  x=x+1;
+	 	 }
+	 else if (runtime2>=LED5_onT)
+	 {
+		 HAL_GPIO_WritePin(GPIOB, GPIO_PIN_6, 0);
+	 }
+
+	 runtime2=HAL_GetTick()-(x*2000);
+
+
 
 //testbunch
 
@@ -234,6 +281,12 @@ static void MX_GPIO_Init(void)
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOA, LD2_Pin|GPIO_PIN_9, GPIO_PIN_RESET);
 
+  /*Configure GPIO pin Output Level */
+  HAL_GPIO_WritePin(GPIOC, GPIO_PIN_7, GPIO_PIN_RESET);
+
+  /*Configure GPIO pin Output Level */
+  HAL_GPIO_WritePin(GPIOB, GPIO_PIN_6, GPIO_PIN_RESET);
+
   /*Configure GPIO pin : B1_Pin */
   GPIO_InitStruct.Pin = B1_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_IT_FALLING;
@@ -247,11 +300,31 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
 
+  /*Configure GPIO pin : PC7 */
+  GPIO_InitStruct.Pin = GPIO_PIN_7;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
+
   /*Configure GPIO pin : PA10 */
   GPIO_InitStruct.Pin = GPIO_PIN_10;
   GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+
+  /*Configure GPIO pins : PB3 PB5 */
+  GPIO_InitStruct.Pin = GPIO_PIN_3|GPIO_PIN_5;
+  GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
+
+  /*Configure GPIO pin : PB6 */
+  GPIO_InitStruct.Pin = GPIO_PIN_6;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
 
 }
 
