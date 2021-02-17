@@ -393,100 +393,100 @@ int main(void)
   uint16_t LED3_state= 0;
  80004ee:	2300      	movs	r3, #0
  80004f0:	84fb      	strh	r3, [r7, #38]	; 0x26
-  uint16_t LED1_haftT= 250;//0.5hz
- 80004f2:	23fa      	movs	r3, #250	; 0xfa
- 80004f4:	84bb      	strh	r3, [r7, #36]	; 0x24
+  uint16_t LED1_haftT= 1000;//0.5hz
+ 80004f2:	f44f 737a 	mov.w	r3, #1000	; 0x3e8
+ 80004f6:	84bb      	strh	r3, [r7, #36]	; 0x24
   uint16_t LED5_onT=500 ;
- 80004f6:	f44f 73fa 	mov.w	r3, #500	; 0x1f4
- 80004fa:	847b      	strh	r3, [r7, #34]	; 0x22
+ 80004f8:	f44f 73fa 	mov.w	r3, #500	; 0x1f4
+ 80004fc:	847b      	strh	r3, [r7, #34]	; 0x22
   uint16_t LED5_offT=1500 ;
- 80004fc:	f240 53dc 	movw	r3, #1500	; 0x5dc
- 8000500:	843b      	strh	r3, [r7, #32]
+ 80004fe:	f240 53dc 	movw	r3, #1500	; 0x5dc
+ 8000502:	843b      	strh	r3, [r7, #32]
   uint32_t runtime=0;
- 8000502:	2300      	movs	r3, #0
- 8000504:	61fb      	str	r3, [r7, #28]
+ 8000504:	2300      	movs	r3, #0
+ 8000506:	61fb      	str	r3, [r7, #28]
   uint32_t runtime2=0;
- 8000506:	2300      	movs	r3, #0
- 8000508:	61bb      	str	r3, [r7, #24]
+ 8000508:	2300      	movs	r3, #0
+ 800050a:	61bb      	str	r3, [r7, #24]
   uint32_t timestamp=0;
- 800050a:	2300      	movs	r3, #0
- 800050c:	617b      	str	r3, [r7, #20]
+ 800050c:	2300      	movs	r3, #0
+ 800050e:	617b      	str	r3, [r7, #20]
   uint32_t x=0;
- 800050e:	2300      	movs	r3, #0
- 8000510:	613b      	str	r3, [r7, #16]
+ 8000510:	2300      	movs	r3, #0
+ 8000512:	613b      	str	r3, [r7, #16]
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
 	  if (HAL_GetTick()- timestamp>=100)
- 8000512:	f000 fb33 	bl	8000b7c <HAL_GetTick>
- 8000516:	4602      	mov	r2, r0
- 8000518:	697b      	ldr	r3, [r7, #20]
- 800051a:	1ad3      	subs	r3, r2, r3
- 800051c:	2b63      	cmp	r3, #99	; 0x63
- 800051e:	d957      	bls.n	80005d0 <main+0xf8>
+ 8000514:	f000 fb32 	bl	8000b7c <HAL_GetTick>
+ 8000518:	4602      	mov	r2, r0
+ 800051a:	697b      	ldr	r3, [r7, #20]
+ 800051c:	1ad3      	subs	r3, r2, r3
+ 800051e:	2b63      	cmp	r3, #99	; 0x63
+ 8000520:	d956      	bls.n	80005d0 <main+0xf8>
 	  { timestamp=HAL_GetTick();
- 8000520:	f000 fb2c 	bl	8000b7c <HAL_GetTick>
- 8000524:	6178      	str	r0, [r7, #20]
+ 8000522:	f000 fb2b 	bl	8000b7c <HAL_GetTick>
+ 8000526:	6178      	str	r0, [r7, #20]
 	 SwitchState1[0]= HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_10); //press == LOW
- 8000526:	f44f 6180 	mov.w	r1, #1024	; 0x400
- 800052a:	484c      	ldr	r0, [pc, #304]	; (800065c <main+0x184>)
- 800052c:	f000 fd9a 	bl	8001064 <HAL_GPIO_ReadPin>
- 8000530:	4603      	mov	r3, r0
- 8000532:	733b      	strb	r3, [r7, #12]
+ 8000528:	f44f 6180 	mov.w	r1, #1024	; 0x400
+ 800052c:	484b      	ldr	r0, [pc, #300]	; (800065c <main+0x184>)
+ 800052e:	f000 fd99 	bl	8001064 <HAL_GPIO_ReadPin>
+ 8000532:	4603      	mov	r3, r0
+ 8000534:	733b      	strb	r3, [r7, #12]
 	 SwitchState2[0]= HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_3);
- 8000534:	2108      	movs	r1, #8
- 8000536:	484a      	ldr	r0, [pc, #296]	; (8000660 <main+0x188>)
- 8000538:	f000 fd94 	bl	8001064 <HAL_GPIO_ReadPin>
- 800053c:	4603      	mov	r3, r0
- 800053e:	723b      	strb	r3, [r7, #8]
+ 8000536:	2108      	movs	r1, #8
+ 8000538:	4849      	ldr	r0, [pc, #292]	; (8000660 <main+0x188>)
+ 800053a:	f000 fd93 	bl	8001064 <HAL_GPIO_ReadPin>
+ 800053e:	4603      	mov	r3, r0
+ 8000540:	723b      	strb	r3, [r7, #8]
 	 SwitchState3[0]= HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_5);
- 8000540:	2120      	movs	r1, #32
- 8000542:	4847      	ldr	r0, [pc, #284]	; (8000660 <main+0x188>)
- 8000544:	f000 fd8e 	bl	8001064 <HAL_GPIO_ReadPin>
- 8000548:	4603      	mov	r3, r0
- 800054a:	713b      	strb	r3, [r7, #4]
+ 8000542:	2120      	movs	r1, #32
+ 8000544:	4846      	ldr	r0, [pc, #280]	; (8000660 <main+0x188>)
+ 8000546:	f000 fd8d 	bl	8001064 <HAL_GPIO_ReadPin>
+ 800054a:	4603      	mov	r3, r0
+ 800054c:	713b      	strb	r3, [r7, #4]
 	 if (SwitchState1[1]== GPIO_PIN_SET && SwitchState1[0]== GPIO_PIN_RESET )
- 800054c:	7b7b      	ldrb	r3, [r7, #13]
- 800054e:	2b01      	cmp	r3, #1
- 8000550:	d11b      	bne.n	800058a <main+0xb2>
- 8000552:	7b3b      	ldrb	r3, [r7, #12]
- 8000554:	2b00      	cmp	r3, #0
- 8000556:	d118      	bne.n	800058a <main+0xb2>
+ 800054e:	7b7b      	ldrb	r3, [r7, #13]
+ 8000550:	2b01      	cmp	r3, #1
+ 8000552:	d11a      	bne.n	800058a <main+0xb2>
+ 8000554:	7b3b      	ldrb	r3, [r7, #12]
+ 8000556:	2b00      	cmp	r3, #0
+ 8000558:	d117      	bne.n	800058a <main+0xb2>
 	 {
-		 if(LED1_haftT==250)
- 8000558:	8cbb      	ldrh	r3, [r7, #36]	; 0x24
- 800055a:	2bfa      	cmp	r3, #250	; 0xfa
- 800055c:	d103      	bne.n	8000566 <main+0x8e>
+		 if(LED1_haftT==1000)
+ 800055a:	8cbb      	ldrh	r3, [r7, #36]	; 0x24
+ 800055c:	f5b3 7f7a 	cmp.w	r3, #1000	; 0x3e8
+ 8000560:	d103      	bne.n	800056a <main+0x92>
 		 {
 			 LED1_haftT=500;
- 800055e:	f44f 73fa 	mov.w	r3, #500	; 0x1f4
- 8000562:	84bb      	strh	r3, [r7, #36]	; 0x24
- 8000564:	e011      	b.n	800058a <main+0xb2>
+ 8000562:	f44f 73fa 	mov.w	r3, #500	; 0x1f4
+ 8000566:	84bb      	strh	r3, [r7, #36]	; 0x24
+ 8000568:	e00f      	b.n	800058a <main+0xb2>
 		 }
 		 else if (LED1_haftT==500)
- 8000566:	8cbb      	ldrh	r3, [r7, #36]	; 0x24
- 8000568:	f5b3 7ffa 	cmp.w	r3, #500	; 0x1f4
- 800056c:	d103      	bne.n	8000576 <main+0x9e>
-		 { LED1_haftT=1000;
- 800056e:	f44f 737a 	mov.w	r3, #1000	; 0x3e8
- 8000572:	84bb      	strh	r3, [r7, #36]	; 0x24
- 8000574:	e009      	b.n	800058a <main+0xb2>
+ 800056a:	8cbb      	ldrh	r3, [r7, #36]	; 0x24
+ 800056c:	f5b3 7ffa 	cmp.w	r3, #500	; 0x1f4
+ 8000570:	d102      	bne.n	8000578 <main+0xa0>
+		 { LED1_haftT=250;
+ 8000572:	23fa      	movs	r3, #250	; 0xfa
+ 8000574:	84bb      	strh	r3, [r7, #36]	; 0x24
+ 8000576:	e008      	b.n	800058a <main+0xb2>
 		 }
-		 else if (LED1_haftT==1000)
- 8000576:	8cbb      	ldrh	r3, [r7, #36]	; 0x24
- 8000578:	f5b3 7f7a 	cmp.w	r3, #1000	; 0x3e8
- 800057c:	d103      	bne.n	8000586 <main+0xae>
-		 { LED1_haftT=1500;
- 800057e:	f240 53dc 	movw	r3, #1500	; 0x5dc
- 8000582:	84bb      	strh	r3, [r7, #36]	; 0x24
- 8000584:	e001      	b.n	800058a <main+0xb2>
+		 else if (LED1_haftT==250)
+ 8000578:	8cbb      	ldrh	r3, [r7, #36]	; 0x24
+ 800057a:	2bfa      	cmp	r3, #250	; 0xfa
+ 800057c:	d102      	bne.n	8000584 <main+0xac>
+		 { LED1_haftT=166;
+ 800057e:	23a6      	movs	r3, #166	; 0xa6
+ 8000580:	84bb      	strh	r3, [r7, #36]	; 0x24
+ 8000582:	e002      	b.n	800058a <main+0xb2>
 		 }
 		 else
 		{
-			 LED1_haftT = 250 ;
- 8000586:	23fa      	movs	r3, #250	; 0xfa
+			 LED1_haftT = 1000 ;
+ 8000584:	f44f 737a 	mov.w	r3, #1000	; 0x3e8
  8000588:	84bb      	strh	r3, [r7, #36]	; 0x24
 		}
 	 }
@@ -622,7 +622,7 @@ int main(void)
  8000656:	1acb      	subs	r3, r1, r3
  8000658:	61bb      	str	r3, [r7, #24]
 	  if (HAL_GetTick()- timestamp>=100)
- 800065a:	e75a      	b.n	8000512 <main+0x3a>
+ 800065a:	e75b      	b.n	8000514 <main+0x3c>
  800065c:	40020000 	.word	0x40020000
  8000660:	40020400 	.word	0x40020400
  8000664:	40020800 	.word	0x40020800
